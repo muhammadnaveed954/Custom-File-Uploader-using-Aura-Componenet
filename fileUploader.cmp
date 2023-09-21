@@ -2,11 +2,8 @@
    access="global" controller="CaseController1">
    
    <aura:attribute name="Id" type="String" />
-   <aura:attribute name="fileLimitError" type="Boolean" default="false" />
    <aura:attribute name="uploadedFileNames" type="String" />
    <aura:attribute name="uploadedFiles" type="String" />
-   <aura:attribute name="filetype" type="List" default="['.pdf']" />
-   <aura:handler name="init" value="{!this}" action="{!c.init}" />
 
            <div class="attachment-upload slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-p-around_medium">
                   <p>
@@ -15,7 +12,7 @@
                       // Itteration of the name of the uploaded files Start
 
                      <aura:iteration items="{!v.uploadedFileNames}" var="uploadedFilesName" indexVar="index">
-                        <span class="remove-file file-name">  {!uploadedFilesName.name ? uploadedFilesName.name : uploadedFilesName[0].name}
+                        <span class="file-name">  {!uploadedFilesName.name ? uploadedFilesName.name : uploadedFilesName[0].name}
                            <i onclick="{!c.removeFileHandler}" data-index="{!index}" class="remove-file fa-light fa-circle-xmark"></i> 
                         </span> 
                      </aura:iteration>
@@ -26,7 +23,6 @@
 
                   <lightning:input 
                      type="file"
-                     maxFiles="3" 
                      onchange="{!c.handleFileUpload}"
                      multiple="true"
                      aura:id="fileId"/>
