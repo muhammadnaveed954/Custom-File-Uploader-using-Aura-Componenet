@@ -28,4 +28,12 @@
                      aura:id="fileId"/>
 
           </div>
+           <div class="slds-modal__footer slds-grid slds-grid_vertical-align-center slds-grid_align-center">
+               <div>
+                  <button class="slds-m-horizontal_x-small slds-p-horizontal_x-large slds-button slds-button_neutral" onclick="{!c.cancelHandler}" aria-label="Cancel and close">Cancel</button>
+               </div>
+               <div>
+                  <button class="slds-m-horizontal_x-small slds-p-horizontal_x-large slds-button slds-button_brand" onclick="{!c.updateStatusHandler}">Submit</button>
+               </div>
+            </div>
 </aura:component>
