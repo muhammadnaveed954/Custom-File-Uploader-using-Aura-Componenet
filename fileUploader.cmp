@@ -1,97 +1,27 @@
 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
    access="global" controller="CaseController1">
    
-   <aura:attribute name="isStatusMOdelOpen" type="Boolean" default="false" />
-   <aura:attribute name="status" type="String" />
    <aura:attribute name="Id" type="String" />
-   <aura:attribute name="showSpinner" type="Boolean" default="false" />
-   <aura:attribute name="statusOptions" type="List"/>
-   <aura:attribute name="statusReasonOptions" type="List"/>
-   <aura:attribute name="statusReasonValue" type="String" />
-   <aura:attribute name="contractorComment" type="String" />
-   <aura:attribute name="showStatusReasonError" type="Boolean" default="false" />
-   <aura:attribute name="showrevisedDueDateError" type="Boolean" default="false" />
    <aura:attribute name="fileLimitError" type="Boolean" default="false" />
-   <aura:attribute name="showDueDateError" type="Boolean" default="false" />
-
-   <aura:attribute name="revisedDueDate" type="String" />
-   <aura:attribute name="selectedRowIds" type="List" default="[]"/>
-   <aura:attribute name="recordId" type="string"  />
-   <aura:attribute name="showChangeStatusButton" type="Boolean" />
    <aura:attribute name="uploadedFileNames" type="String" />
    <aura:attribute name="uploadedFiles" type="String" />
-   <aura:attribute name="dueDate" type="String" />
-
-   <aura:attribute name="hideCommentField" type="string" />
    <aura:attribute name="filetype" type="List" default="['.pdf']" />
-   <aura:attribute name="disabled" type="Boolean" default="true" />
-   <lightning:notificationsLibrary aura:id="notifLib"/>
    <aura:handler name="init" value="{!this}" action="{!c.init}" />
-   <aura:attribute name="caseFiles" type="List" />
 
-   <aura:if isTrue="{!v.isStatusMOdelOpen}">
-      <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02" class="model-changestatus slds-modal slds-fade-in-open slds-modal_large">
-         <div class="slds-modal__container">
-            <div class="slds-modal__header">
-               <h1 id="modal-heading-02" class="slds-p-vertical_small slds-modal__title slds-hyphenate">Change Case Status</h1>
-            </div>
-            <div class="slds-modal__content slds-p-horizontal_medium slds-p-vertical_x-large" id="modal-content-id-2">
-               <p class="label">Choose case status</p>
-               <div class="lightning-combobox">
-                  <lightning:combobox label="" name="status" value="{!v.status}" options="{!v.statusOptions}" onchange ="{!c.statusHandler}" />
-               </div>
-               <aura:if isTrue="{!v.status == 'On Hold' || v.status == 'Job Complete'}">
-                  <p class="label">Reason</p>
-                  <div class="lightning-combobox">
-                     <lightning:combobox name="reason" value="{!v.statusReasonValue}" options="{!v.statusReasonOptions}" onchange ="{!c.reasonHandler}"  />
-                  </div>
-
-                  <aura:if isTrue="{!v.showStatusReasonError}">
-                     <p class="showEmptyError">Please select the reason</p>
-                  </aura:if>
-
-
-                  <aura:if isTrue="{!v.status == 'On Hold'}">
-                     <p class="label">Revised Due Date</p>
-                     <div class="lightning-combobox revised-due-date">
-                        <lightning:input type="date" onchange ="{!c.revisedDueDateHandler}"  value="{!v.revisedDueDate}" name="input1" />
-                     </div>
-                     <aura:if isTrue="{!v.showrevisedDueDateError}">
-                        <p class="showEmptyError">Please select the revised due date</p>
-                     </aura:if>
-                     <aura:if isTrue="{!v.showDueDateError}">
-                        <p class="showEmptyError">Revised due date should be greater than the due date ( <span> {!v.dueDate} </span>)</p>
-                        <!-- <p class="showEmptyError">The due date is {!dueDate}</p> -->
-                     </aura:if>
-                  </aura:if>
-               </aura:if>
-               <!-- <aura:if isTrue="{!v.status == 'Job Complete'}">
-                  <p class="label">Reason</p>
-                  <div class="lightning-combobox">
-                     <lightning:combobox name="status" value="{!v.closeReason}" options="{!v.onHoldReasonOptions}" onchange="{!c.statusHandler}" />
-                  </div>
-               </aura:if> -->
-               <!-- <aura:if isTrue="{!v.status == 'Deployed(Test)'}">
-                  <p class="label">Deployment Tracker</p>
-                  <div>
-                     <lightning:inputRichText value="{!v.deploymentTracker}" />
-                  </div>
-               </aura:if> -->
-        
-
-               <aura:if  isTrue="{!v.hideCommentField != 'false'}">
-               <p class="label">Comments</p>
-               <lightning:textarea labelHidden="true" value="{!v.contractorComment}" onchange ="{!c.contractorCommentHandler}" class="hide-editor" disabled="{!v.isDisabled}" fieldName="contractorComment" />
-               <p class="label">Upload an image or invoice</p>
-               <div class="attachment-upload slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-p-around_medium">
+           <div class="attachment-upload slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-p-around_medium">
                   <p>
-                     Limit of 3 attachment. Max file size 20MB. <br></br>
+                     Limit of 3 attachment. Max file size 20MB.
+
+                      // Itteration of the name of the uploaded files Start
+
                      <aura:iteration items="{!v.uploadedFileNames}" var="uploadedFilesName" indexVar="index">
-                  
                         <span class="remove-file file-name">  {!uploadedFilesName.name ? uploadedFilesName.name : uploadedFilesName[0].name}
                            <i onclick="{!c.removeFileHandler}" data-index="{!index}" class="remove-file fa-light fa-circle-xmark"></i> 
                         </span> 
-                       </aura:iteration>
+                     </aura:iteration>
+
+                      // Itteration of the name of the uploaded files Startt
+
                   </p>
 
                   <lightning:input 
@@ -101,42 +31,5 @@
                      multiple="true"
                      aura:id="fileId"/>
 
-                  <!-- <lightning:fileUpload 
-                     name="fileUploader" 
-                     type="file"  multiple="true" 
-                     maxFiles="3" 
-                     recordId="{!v.recordId}" 
-                     accept="{!v.filetype}"  
-                     onuploadfinished="{!c.handleUploadFinished}"
-                     /> -->
-                     <!-- <c:testFileUploader></c:testFileUploader> -->
-                     <!-- <div>
-                        <aura:iteration items="{!v.uploadedFileNames}" var="fileName">
-                        <span class="file-name">{!fileName}</span>
-                     </aura:iteration>
-                     </div> -->
-               </div>
-               <aura:if isTrue="{!v.fileLimitError}">
-                  <p class="showEmptyError">You can select upto three files only</p>
-               </aura:if>
-               <!-- <aura:if isTrue="{!not(empty(v.miscRId))}"> -->
-                   <!-- <c:essFileuploader myRecordId="{!v.recordId}" /> -->
-               <!-- </aura:if> -->
-
-               </aura:if>
-            </div>
-            <div class="slds-modal__footer slds-grid slds-grid_vertical-align-center slds-grid_align-center">
-               <div>
-                  <button class="slds-m-horizontal_x-small slds-p-horizontal_x-large slds-button slds-button_neutral" onclick="{!c.cancelHandler}" aria-label="Cancel and close">Cancel</button>
-               </div>
-               <div>
-                  <button class="slds-m-horizontal_x-small slds-p-horizontal_x-large slds-button slds-button_brand" onclick="{!c.updateStatusHandler}">Submit</button>
-               </div>
-            </div>
-         </div>
-      </section>
-      <lightning:spinner aura:id="spinner" variant="brand" class="{! v.showSpinner ? 'pop-up-spinner slds-show' : 'slds-hide' }"/>
-      <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
-      <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
-   </aura:if>
+          </div>
 </aura:component>
