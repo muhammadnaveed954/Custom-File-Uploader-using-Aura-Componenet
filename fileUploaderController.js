@@ -8,7 +8,7 @@
     },
 
     // TO Remove File Uploaded file on click via UI before sending it to the backend by clicking on the cross icon.
-    // I used two different methods to remove the file, from UI and and from the list because of Objecct dificulty. 
+    // I used two different methods to remove the file, from UI and from the list to send it to the Record via Apex, because of Objecct difficulty. 
     
     removeFileHandler: function (component, event, helper) {
         let fileToRemove = event.currentTarget.getAttribute("data-index");
@@ -61,7 +61,5 @@
             objFileReader.readAsDataURL(selectedFile);
         }
     },
-
-    
     
 })
